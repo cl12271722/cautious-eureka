@@ -1,0 +1,61 @@
+枚举类型，指将变量的值一一列举出来，变量的值只限于列举出来的值的范围内
+从技术上讲，枚举元素是int型变量
+语法与结构体语法相同
+  enum gender {male,female};
+  enum gender person;
+默认时，枚举列表中的常量被指定为整数值0、1、2等，也可在声明中包含期望的值
+  enum gender {male,female};
+  enum day{Sun=7,Mon=1,Tue,Wed,Thu,Fri,Sat};
+  enum levels{low=1,medium=5,high=9};
+整型数必须强制转换才能赋给枚举变量
+  enum day week=(enum day)2;
+枚举类型的目的是提高程序的可读性
+如果是处理颜色，采用red和blue要比使用0和1更显而易见
+  enum spectrum {red,orange,yellow,green,cyan,blue,violet};
+  enum spectrum color;
+
+
+编写一个小游戏：用户输入颜色，计算机输出特定的图案
+  #include<stdio.h>
+  #include<string.h>
+  #define  LEN  30
+  enum spectrum {red,orange,yellow,green,cyan,blue,violet};//声明光谱的颜色取值范围
+  char *rainbow[]={"red","orange","yellow","green","cyan","blue","violet"};//定义指针数组，每个元素指向一个表示颜色的字符串常量
+  int main()
+  {
+    char choice[LEN];
+    enum spectrum color;//定义枚举类型enum spectrum类型的变量
+    int color_is_found=0;//设置标识，颜色没找到设为0
+    puts("Enter a color (empty line to quit):");
+    while(1)
+    {
+      fgets(choice,LEN,stdin);//获取颜色，存入数组choice中
+      choice[strlen(choice)-1]='\0';//去掉最后的回车
+      if(choice[0]!='\0')  //非空行
+      {                        //将所有颜色遍历一遍，并处理
+        for(color=red;color<=violet;color++)//遍历所有的颜色
+          if(strcmp(choice,rainbow[color])==0)
+          {
+            color_is_found=1;
+            break;
+          }
+        if(color_is_found)
+          switch(color)
+          {
+            case red: puts("Those roses are red.");break;
+            case orange: puts("The pumpkings are orange.");break;
+            case yellow: puts("The sun is yellow.");
+            case green: puts("The grass is green.");
+            case cyan: puts("The snake is blue.");
+            case blue: puts("The sky is blue.");
+            case violet: puts("The grapes are violet.");
+          }
+        else printf("Sorry,I don't know about the color\'%s\'\n",choice);
+        color_is_found=0;//将标识改为0
+        puts("Next color,please(empty line to quit):");
+      }
+      else break;
+    }
+    puts("Goodbye!");
+    return 0;
+  }
